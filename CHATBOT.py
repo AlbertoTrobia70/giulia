@@ -40,59 +40,56 @@ logo = Image.open("leone Generali Italia.jpg")
 st.image(logo, width=800)
 # st.image(logo, use_column_width=True)
 
-with st.sidebar:
-  st.title("Carica i tuoi documenti")
-  file = st.file_uploader("Carica il tuo file", type="pdf")
-#file = "Risorse.pdf"
-  from PyPDF2 import PdfReader
-if file is not None:
-  testo_letto = PdfReader(file)
-  testo = ""
-  for pagina in testo_letto.pages:
+file = "Risorse.pdf"
+from PyPDF2 import PdfReader
+
+testo_letto = PdfReader(file)
+testo = ""
+for pagina in testo_letto.pages:
     testo = testo + pagina.extract_text()
     
-  st.write(testo)
+st.write(testo)
 
-    # Usiamo il text splitter di Langchain
-  testo_spezzato = RecursiveCharacterTextSplitter(
+# Usiamo il text splitter di Langchain
+testo_spezzato = RecursiveCharacterTextSplitter(
     separators="\n",
     chunk_size=1000, # Numero di caratteri per chunk
     chunk_overlap=150,
     length_function=len
    )
-  pezzi = testo_spezzato.split_text(testo)
-  st.write(pezzi)
+pezzi = testo_spezzato.split_text(testo)
+st.write(pezzi)
 
-    # Generazione embeddings
-  embeddings = OpenAIEmbeddings(openai_api_key=chiave)
+# Generazione embeddings
+embeddings = OpenAIEmbeddings(openai_api_key=chiave)
 
-    # Vector store - FAISS (by Facebook)
-  vector_store = FAISS.from_texts(pezzi, embeddings)
+# Vector store - FAISS (by Facebook)
+vector_store = FAISS.from_texts(pezzi, embeddings)
 
 # --------------------------------------------------
 # Gestione prompt
 # --------------------------------------------------
 
-  def invia():
+def invia():
       st.session_state.domanda_inviata = st.session_state.domanda
-          # salva il contenuto di input in domanda_inviata
+      # salva il contenuto di input in domanda_inviata
       st.session_state.domanda = ""
-          # reset dopo invio
+      # reset dopo invio
     
-  st.text_input("Chiedi al chatbot:", key="domanda", on_change=invia)
+st.text_input("Chiedi al chatbot:", key="domanda", on_change=invia)
         # key="domanda": assegna a st.session_state ciò che scriviamo (domanda)
         # Ogni volta che l’utente modifica il campo e preme Invio,
         # la funzione invia() viene chiamata.
     
-  domanda = st.session_state.get("domanda_inviata", "")
+domanda = st.session_state.get("domanda_inviata", "")
         # Recupera il valore salvato in "domanda_inviata".
         # Se "domanda_inviata" non è ancora stato definito (es. al primo avvio dell'app),
         # allora il valore predefinito sarà "" (secondo argomento dell'istruzione)
     
     # --------------------------------------------------
     
-  if domanda:
-          # st.write("Sto cercando le informazioni che mi hai richiesto...")
+if domanda:
+      # st.write("Sto cercando le informazioni che mi hai richiesto...")
       rilevanti = vector_store.similarity_search(domanda)
     
     #Definiamo l'LLM
