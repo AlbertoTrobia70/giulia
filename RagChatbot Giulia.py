@@ -100,7 +100,7 @@ comparatore = vettori.as_retriever(
     search_kwargs={"k": 4})
     
 modello_llm = ChatOpenAI(
-    model="gpt-4o-mini",
+    model="GPT-5 nano",
     temperature=0.3,
     max_tokens=1000,
     openai_api_key=st.secrets["superkey"])
@@ -124,4 +124,5 @@ catena = (
     
 if domanda_utente:
     risposta = catena.invoke(domanda_utente)
+
     st.write(risposta)
