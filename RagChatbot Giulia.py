@@ -13,7 +13,7 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 
 # Inserisci qui la tua chiave API di OpenAI
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+OPENAI_API_KEY = st.secrets["superkey"]
 
 st.set_page_config(page_title= "INFO GENERALI BOT",
                    page_icon=":credit_card:")
@@ -103,7 +103,7 @@ modello_llm = ChatOpenAI(
     model="gpt-4o-mini",
     temperature=0.3,
     max_tokens=1000,
-    openai_api_key=st.secrets["OPENAI_API_KEY"])
+    openai_api_key=st.secrets["superkey"])
 
 prompt = ChatPromptTemplate.from_messages([
     ("system", 
