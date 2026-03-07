@@ -36,7 +36,7 @@ from PIL import Image
 logo = Image.open("Leone Generali.png")
 st.image(logo, width=800)
 
-documento = "Corso Agenzia Generali.pdf"
+documento = "Risorse.pdf"
 
 with pdfplumber.open(documento) as pdf:
     # st.write(f"Pagine totali: {len(pdf.pages)} - Comincio la scansione...")
