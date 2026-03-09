@@ -140,7 +140,7 @@ def crea_catena(vettori):
             "Sei un agente assicurativo. "
             "Rispondi usando solo il contesto fornito. "
             "Non usare informazioni esterne. "
-            "Se la risposta non è presente nel contesto, scrivi semplicemente: 'Non lo so'. "
+            "Se la risposta non è presente nel contesto, scrivi semplicemente: 'Non ho trovato una risposta precisa. Per garantirti informazioni sicure, ti suggerisco di consultare le nostre FAQ o di contattare un esperto'. "
             "Rispondi in italiano in modo chiaro e sintetico. "
             "Contesto:\n{context}"
         ),
@@ -233,4 +233,5 @@ else:
 
     if st.session_state.risposta:
         st.write("**Risposta:**")
+
         st.write(st.session_state.risposta)
